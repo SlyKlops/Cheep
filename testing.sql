@@ -1,0 +1,23 @@
+USE `Cheep`;
+
+DELETE FROM USER;
+DELETE FROM ITEM;
+DELETE FROM LOCATION;
+DELETE FROM ITEM_LOCATION_PRICE;
+
+CALL `New_User`('Chris','abc', 'chris@cheep.com', '23435');
+
+SELECT * FROM USER;
+
+CALL `New_IPL`('Bacon', 'Piggly Wiggly', 7);
+
+SELECT * FROM ITEM_LOCATION_PRICE;
+
+SELECT * FROM ITEM;
+SELECT * FROM LOCATION;
+
+CALL `Search_IPLbyName`('Bacon');
+
+CALL `New_Location`('WalMart', '36082');
+
+SELECT * FROM LOCATION;

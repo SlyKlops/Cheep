@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Cheep`.`LOCATION` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(255) NULL,
-  `ZIP` VARCHAR(45) NULL,
+  `Zip` VARCHAR(45) NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `Cheep`.`USER` (
   `Username` VARCHAR(45) NOT NULL,
   `Password` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL COMMENT 'Make sure web app says \"Valid Email required\".\nShould also check to see if repeated email.',
+  `Zip` VARCHAR(45),
   `Date_Joined` DATE NULL,
   PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
