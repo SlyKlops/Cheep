@@ -19,29 +19,6 @@ CREATE SCHEMA IF NOT EXISTS `Cheep` DEFAULT CHARACTER SET utf8 COLLATE utf8_gene
 USE `Cheep` ;
 
 -- -----------------------------------------------------
--- Table `Cheep`.`ITEM`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Cheep`.`ITEM` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(255) NULL,
-  `Description` VARCHAR(255) NULL,
-  `Category` VARCHAR(45) NULL COMMENT 'Grocery/Electronic/Etc..',
-  PRIMARY KEY (`ID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Cheep`.`LOCATION`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Cheep`.`LOCATION` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Name` VARCHAR(255) NULL,
-  `Zip` VARCHAR(45) NULL,
-  PRIMARY KEY (`ID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Cheep`.`USER`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Cheep`.`USER` (
@@ -58,10 +35,34 @@ CREATE UNIQUE INDEX `Email_UNIQUE` ON `Cheep`.`USER` (`Email` ASC);
 
 CREATE UNIQUE INDEX `Username_UNIQUE` ON `Cheep`.`USER` (`Username` ASC);
 
+-- -----------------------------------------------------
+-- Table `Cheep`.`ITEM`
+-- -----------------------------------------------------
+-- @@COMING SOON: NAME WILL BE UNIQUE INDEX
+-- @@COMING SOON: BRANDS IN PLACE OF DESCRIPTION
+CREATE TABLE IF NOT EXISTS `Cheep`.`ITEM` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(255) NULL,
+  `Description` VARCHAR(255) NULL,
+  `Category` VARCHAR(45) NULL COMMENT 'Grocery/Electronic/Etc..',
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Cheep`.`LOCATION`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Cheep`.`LOCATION` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(255) NULL,
+  `Zip` VARCHAR(45) NULL,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Cheep`.`LIST`
 -- -----------------------------------------------------
+-- @@COMING SOON: "COMPLETED" BOOLEAN VALUE (ALLOW A COMPLETED LIST TO REMAIN ON USER LIST OF LISTS BEFORE BEING DELETED)
+-- @@COMING SOON: LIST "RUNNING TOTAL PRICE"
 CREATE TABLE IF NOT EXISTS `Cheep`.`LIST` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `USER_ID` INT NOT NULL,
@@ -77,7 +78,6 @@ ENGINE = InnoDB;
 
 CREATE INDEX `fk_LIST_USER_idx` ON `Cheep`.`LIST` (`USER_ID` ASC);
 
-
 -- -----------------------------------------------------
 -- Table `Cheep`.`ITEM_LOCATION_PRICE`
 -- -----------------------------------------------------
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `Cheep`.`ITEM_LOCATION_PRICE` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `ITEM_ID` INT NOT NULL,
   `LOCATION_ID` INT NOT NULL,
-  `Price` INT NULL,
+  `Price` DECIMAL (9,2) NULL,
   PRIMARY KEY (`ID`, `ITEM_ID`, `LOCATION_ID`),
   CONSTRAINT `fk_ITEM_LOCATION_PRICE_ITEM1`
     FOREIGN KEY (`ITEM_ID`)
@@ -102,7 +102,6 @@ ENGINE = InnoDB;
 CREATE INDEX `fk_ITEM_LOCATION_PRICE_ITEM1_idx` ON `Cheep`.`ITEM_LOCATION_PRICE` (`ITEM_ID` ASC);
 
 CREATE INDEX `fk_ITEM_LOCATION_PRICE_LOCATION1_idx` ON `Cheep`.`ITEM_LOCATION_PRICE` (`LOCATION_ID` ASC);
-
 
 -- -----------------------------------------------------
 -- Table `Cheep`.`LIST_has_ILP`

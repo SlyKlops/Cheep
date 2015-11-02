@@ -20,25 +20,86 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- Procedure `New_Item`
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS `New_Item`;
+
+DELIMITER //
+CREATE PROCEDURE `New_Item`(IN IName VARCHAR(255), IN IDesc VARCHAR(255), IN ICat VARCHAR(45))
+BEGIN
+	DECLARE CurID INT;
+    SET CurID = (SELECT Coalesce(MAX(ID), 0) FROM `ITEM`) + 1;
+    
+    INSERT INTO `ITEM`(ID, `Name`, Description, Category) VALUES (CurID, IName, IDesc, ICat);
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `New_Location`
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS `New_Location`;
+
+DELIMITER //
+CREATE PROCEDURE `New_Location` (IN LocName VARCHAR(45), IN LocZip VARCHAR(45))
+BEGIN
+	DECLARE CurID INT;
+    SET CurID = (SELECT Coalesce(MAX(ID), 0) FROM `LOCATION`) + 1;
+    
+    INSERT INTO `LOCATION`(ID, `Name`, Zip) VALUES (CurID, LocName, LocZip);
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `Get_Locations_byZip`
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS `Get_Locations_byZip`;
+
+DELIMITER //
+CREATE PROCEDURE `Get_Locations_byZip`(IN UZip VARCHAR(45))
+BEGIN
+	SELECT * FROM `LOCATION` WHERE `Zip` = UZip;
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- Procedure `New_ILP`
 -- -----------------------------------------------------
--- This is for adding items with prices and locations.
--- Thinking that this should only accept existing Items and Locations. The only "new" data should be price?
+-- Only accepts existing items/locations
+-- @@COMING SOON: INCLUDING BRAND IN ILPS
 
 DROP PROCEDURE IF EXISTS `New_ILP`;
 
 DELIMITER //
-CREATE PROCEDURE `New_ILP`(IN IName VARCHAR(45), IN ILoc VARCHAR(45), IN IPrice INT)
+CREATE PROCEDURE `New_ILP`(IN IName VARCHAR(255), IN LocName VARCHAR(45),IN LocZip INT, IN IPrice INT)
 BEGIN
-	DECLARE CurItemID, CurLocID, CurILPID INT;
-    SET CurItemID = (SELECT Coalesce(MAX(ID), 0) FROM `ITEM`) + 1;
-    SET CurLocID = (SELECT Coalesce(MAX(ID), 0) FROM `LOCATION`) + 1;
-    SET CurILPID = (SELECT Coalesce(MAX(ID), 0) FROM `ITEM_LOCATION_PRICE`) + 1;
+	DECLARE ItemID, LocID, CurID INT;
+    SET ItemID = (SELECT ID FROM `ITEM` WHERE `Name` = IName);
+    SET LocID = (SELECT ID FROM `LOCATION` WHERE `Name` = LocName AND Zip = LocZip);
+    SET CurID = (SELECT Coalesce(MAX(ID), 0) FROM `ITEM_LOCATION_PRICE`) + 1;
     
-    INSERT INTO `ITEM`(ID, `Name`) VALUES (CurItemID, IName);
-    INSERT INTO `LOCATION`(ID, `Name`, Zip) VALUES (CurLocID, ILoc, 00000);
-    INSERT INTO `ITEM_LOCATION_PRICE` (ID, ITEM_ID, LOCATION_ID, Price) VALUES (CurILPID, CurItemID, CurLocID, IPrice);    
-    
+    INSERT INTO `ITEM_LOCATION_PRICE` (ID, ITEM_ID, LOCATION_ID, Price) VALUES (CurID, ItemID, LocID, IPrice);    
+END //
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `Get_ILP_byZip`
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS `Get_ILP_byZip`;
+
+DELIMITER //
+CREATE PROCEDURE `Get_ILP_byZip`(IN UZip VARCHAR(45))
+BEGIN
+	SELECT `ITEM_LOCATION_PRICE`.ID, `ITEM_LOCATION_PRICE`.Price, `LOCATION`.`Name`, `ITEM`.`Name`
+    FROM `ITEM_LOCATION_PRICE`, `ITEM`, `LOCATION` 
+    WHERE 
+		`LOCATION`.ID = `ITEM_LOCATION_PRICE`.LOCATION_ID
+        AND `ITEM`.ID = `ITEM_LOCATION_PRICE`.ITEM_ID
+        AND `LOCATION`.Zip = UZip
+	ORDER BY `ITEM_LOCATION_PRICE`.Price ASC;    
 END //
 DELIMITER ;
 
@@ -62,28 +123,6 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
--- Procedure `New_Item`
--- -----------------------------------------------------
-
--- This procedure currently does not exist because items are only under ILPs in the app
-
--- -----------------------------------------------------
--- Procedure `New_Location`
--- -----------------------------------------------------
-
-DROP PROCEDURE IF EXISTS `New_Location`;
-
-DELIMITER //
-CREATE PROCEDURE `New_Location` (IN LocName VARCHAR(45), IN LocZip VARCHAR(45))
-BEGIN
-	DECLARE CurID INT;
-    SET CurID = (SELECT Coalesce(MAX(ID), 0) FROM `LOCATION`) + 1;
-    
-    INSERT INTO `LOCATION`(ID, `Name`, Zip) VALUES (CurID, LocName, LocZip);
-END //
-DELIMITER ;
-
--- -----------------------------------------------------
 -- Procedure `New_List`
 -- -----------------------------------------------------
 
@@ -98,6 +137,19 @@ BEGIN
     
     INSERT INTO `LIST` (ID, USER_ID, `Name`) VALUES (CurID, UID, LName);
 END // 
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `Get_Lists_byUser`
+-- -----------------------------------------------------
+
+DROP PROCEDURE IF EXISTS `Get_Lists_byUser`;
+
+DELIMITER //
+CREATE PROCEDURE `Get_Lists_byUser`(IN UName VARCHAR(45))
+BEGIN
+	SELECT * FROM `LIST` WHERE USER_ID IN (SELECT ID FROM `USER` WHERE `Username` = UName);
+END //
 DELIMITER ;
 
 -- -----------------------------------------------------
@@ -120,20 +172,6 @@ BEGIN
 	INSERT INTO `LIST_has_ILP` (LIST_ID, ILP_ID) VALUES (ListID, ILPID);
 END //
 DELIMITER ;
-
--- -----------------------------------------------------
--- Procedure `Get_UserLists`
--- -----------------------------------------------------
-
-DROP PROCEDURE IF EXISTS `Get_UserLists`;
-
-DELIMITER //
-CREATE PROCEDURE `Get_UserLists` (IN UName VARCHAR(45))
-BEGIN
-	SELECT `Name` FROM `LIST` WHERE USER_ID IN (SELECT ID FROM `USER` WHERE `Username` = UName);
-END //
-DELIMITER ;
-
 
 -- -----------------------------------------------------
 -- Procedure `Get_ListItems`
