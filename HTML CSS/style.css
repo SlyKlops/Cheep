@@ -1,0 +1,67 @@
+body {
+	font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif;
+	background-color: #42413C;
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+
+/* ~~ Element/tag selectors ~~ */
+ul, ol, dl {
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin-top: 0;	 
+	padding-right: 15px;
+	padding-left: 15px; 
+}
+a img { 
+	border: none;
+}
+/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+a:link {
+	color: #42413C;
+	text-decoration: none;
+}
+a:visited {
+	color: #6E6C64;
+	text-decoration: underline;
+}
+a:hover, a:active, a:focus { 
+	text-decoration: none;
+}
+
+/* ~~ this fixed width container surrounds all other elements ~~ */
+.container {
+	width: 960px;
+	background-color: #FFF;
+	margin: 0 auto; 
+}
+
+/* ~~ This is the layout information. ~~ */
+.content {
+	padding: 10px 0;
+}
+
+/* ~~ miscellaneous float/clear classes ~~ */
+.fltrt { 
+	float: right;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+.fltlft {
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
