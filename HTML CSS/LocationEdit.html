@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel ="stylesheet" type="text/css" href="style.css">
 <title>Location Edit</title>
+<script type="text/javascript" src="table.js"></script>
 </head>
 
 <body>
@@ -19,6 +20,19 @@
     <br />
     </form>
     <h3>Table of locations and item count to be inserted</h3>
+	   <div id="myDynamicData">
+<!-- <input type="button" id="create" value="Click here" onclick="Javascript:addRow()"> -->
+
+<table id="myTableData"  border="1" cellpadding="2">
+    <tr>
+        <td>&nbsp;</td>
+        <td><b>Location</b></td>
+        <td><b>Item Count</b></td>
+        
+    </tr>
+    </table>
+&nbsp;
+</div>
     <form action="LocationItem.html">
     <input type="submit" value="Add New Item">
 	</form>
