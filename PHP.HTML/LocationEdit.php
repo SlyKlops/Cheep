@@ -1,10 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<?php require_once("Database_Connection.php");?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
+<style>
+table, th, td {
+     border: 1px solid black;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel ="stylesheet" type="text/css" href="style.css">
 <title>Location Edit</title>
-<script type="text/javascript" src="table_practice.js"></script>
+
 </head>
 
 <body>
@@ -19,22 +25,21 @@
     <br />
     <br />
     </form>
-    <h3>Table of locations and item count to be inserted</h3>
-	   <div id="myDynamicData">
-	   <input type="button" value="Generate Table" onclick="GenerateTable()" />
+<?php 
+	$sqli = "SELECT Name, Zip FROM location";
+	$results = $dbc->query($sqli);
 
-<!-- <input type="button" id="create" value="Click here" onclick="Javascript:addRow()"> -->
 
-<!--<table id="myTableData"  border="1" cellpadding="2">
-    <tr>
-        <td><input type="button" id="display" value = "Display All DATA"/></td>
-        <td><b>Location</b></td>
-        <td><b>Item Count</b></td>
-        
-    </tr>
-    </table>
-&nbsp;-->
+     echo "<table><tr><th>Name</th><th>Zip</th></tr>";
+     // output data of each row
+     while($row = $results->fetch_assoc()) {
+         echo "<tr><td>" . $row["Name"]. "</td><td>" . $row["Zip"]. "</td></tr>";
+	 }  echo "</table>";
+?>	
+    <h3>Table of location Name and Zip to be inserted</h3>
+	   <div >
 </div>
+
 <div id="responsecontainer" align="center"></div>
     <form action="LocationItem.html">
     <input type="submit" value="Add New Item">

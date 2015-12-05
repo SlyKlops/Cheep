@@ -33,20 +33,21 @@ table, th, td {
         </form>
         <br />
         <h3>Table of Items to be inserted</h3>
-		<div id="myDynamicData">
-<!-- <input type="button" id="create" value="Click here" onclick="Javascript:addRow()">  -->
+		<div	id= "dvtable">
 <?php 
-	$sqli = "SELECT item_id, loc_id,cur_id FROM item_location_price";
+	$sqli = "SELECT * FROM item_location_price";
 	$results = $dbc->query($sqli);
 
 
-     echo "<table><tr><th>Item</th><th>Location</th><th>Price</th></tr>";
+       echo"<table><tr><th>Item</th><th>Location</th><th>Price</th></tr>";
      // output data of each row
-     while($row = $results->fetch_assoc()) {
-         echo "<tr><td>" . $row["ITEM"]. "</td><td>" . $row["Location"]. "</td><td>".$row["Price"]."</td></tr>";
+     while($row = mysqli_fetch_array($results)) {
+         echo "<tr><td>" . $row["Item_ID"]. "</td><td>" . $row["Location_ID"]. "</td><td>".$row["Price"]."</td></tr>";
 	 }
+	 echo "</table>";
 ?>
-    </div>
+    
+	</div>
 	<div id="responsecontainer" align="center"></div>
       	<form action="ListView.html">
 	    <input type="submit" value="Add Item">

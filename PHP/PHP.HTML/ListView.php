@@ -22,17 +22,19 @@ table, th, td {
     <h3>Table of Items and Locations to be inserted</h3>
 	<div	id= "dvtable">
 <?php 
-	$sqli = "SELECT username FROM List Where username = $'Name'";
-	$results = $dbc->query($sqli);
+$input = "SELECT *FROM list";
+$result = $dbc->query($input);
 
-
-       echo "<table><tr><th>Username</th></tr>";
+if ($result->num_rows > 0)
+{
+     echo "<table><tr><th>Name</th><th>Description</th></tr>";
      // output data of each row
-     while($row = mysqli_fetch_array($results)) {
-         echo "<tr><td>" . $row["username"]. "</td></tr>";
-	 }
-?>
-    
+     while($row = $result->fetch_assoc()) {
+         echo "<tr><td>" . $row["Name"]. "</td><td>". $row["Description"]."</td></tr>";
+     }
+     echo "</table>";
+} 
+?>    
 	</div>
 	<div id="responsecontainer" align="center"></div>
     <form action="ItemSearch.html">

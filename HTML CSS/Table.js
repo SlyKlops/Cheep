@@ -35,17 +35,29 @@ ajaxRequest.onreadystatechange = function(){
    ajaxRequest.open("Get", "Ajax-example.php"+ queryString, true);   
    ajaxRequest.send(null);
 }*/
+$(document).ready(function)
+{
+	$("#display".click(function(){
+	$.ajax({
+		type:"GET",
+		url:"display.php",
+		dataType:"html",
+		success:function(response){
+			$("#responsecontainer").html(response);
+		}
+	});
+});
 function addRow() { 
           
-    /*var item = document.getElementById("item");
+    var item = document.getElementById("item");
     var price = document.getElementById("price");
-    var location = document.getElementById("location")*/
+    var location = document.getElementById("location")
     var table = document.getElementById("myTableData");
  
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
  
-    row.insertCell(0).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
+    row.insertCell(0).innerHTML= <input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">;
     row.insertCell(1).innerHTML= item.value;
     row.insertCell(2).innerHTML= price.value;
     row.insertCell(3).innerHTML= location.value;
@@ -89,7 +101,7 @@ function load() {
     console.log("Page load finished");
  
 }
-function showTable(str) {
+/*function showTable(str) {
   //var xhttp;  
   var str = document.getElementById("word").value;
   var div = document.getElementById("table");
@@ -111,12 +123,13 @@ function showTable(str) {
   } else if(str == "") {
 txt.innerHTML= "";
 div.innerHTML= "";  }
-}
+}*/
  // xml.open("GET", "connect.php"+str, true);
   //xml.send();
   //xml.setRequestHeader("content-type","application/x-www-form-urlencoded");
   /*  var v = "word=" +value;
-    xml.send(v);*/
+    xml.s
+	end(v);*/
 
 
 
