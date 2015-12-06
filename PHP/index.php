@@ -6,7 +6,7 @@
 <title>Untitled Document</title>
 </head>
 <body>
-<form method="post" action="reprocess.php"
+<form method="post" action="reprocess.php">
 <table width="300" border="0">
 	<tr>
 	  <td>Username:</td>
